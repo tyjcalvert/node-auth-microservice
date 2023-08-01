@@ -1,6 +1,13 @@
 const { Schema, model } = require('mongoose');
 const bycrypt = require('bcrypt');
 
+const passwordRegex = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])^[\x21-\x7E]+$/;
+const passwordErrMsg = 
+  'Password must include: at least one lowercase letter, one uppercase letter, one numeric character, and one special character';
+
+const emailRegex = /.+@.+\..+/;
+const emailErrMsg = 'Please enter a valid e-mail address';
+
 const UserSchema = new Schema({
     username: {
         type: String,
@@ -12,13 +19,13 @@ const UserSchema = new Schema({
         type: String,
         unique: true,
         required: true,
-        match: [/.+@.+\..+/, 'Please enter a valid e-mail address'],
+        match: [emailRegex, emailErrMsg],
     },
     password: {
         type: String,
         required: true,
         minLength: 8,
-        match: [/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])^[\x21-\x7E]+$/, 'Password must include: at least one lowercase letter, one uppercase letter, one numeric character, and one special character'],
+        match: [passwordRegex, passwordErrMsg],
     },
 });
 
