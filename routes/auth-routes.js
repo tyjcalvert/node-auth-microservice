@@ -5,6 +5,7 @@ router.route('/user')
     .get(authController.getUsers)
     .post(authController.createUser);
 
-// router.route('/login');
+router.route('/login')
+    .post(authController.login);
 
 module.exports = router;

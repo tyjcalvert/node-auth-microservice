@@ -1,3 +1,4 @@
+const e = require('express');
 const { User } = require('../models');
 
 module.exports = {
@@ -17,6 +18,29 @@ module.exports = {
         } catch (err) {
           console.error(err);
           res.status(500).json(err);
+        }
+    },
+    async login(req, res) {
+        try {
+            const { username, password } = req.body;
+            const user = await User.findOne({ username });
+
+            if (!user) {
+              throw 'Authentication failed!'
+            };
+      
+            const correctPw = await user.isCorrectPassword(password);
+      
+            if (!correctPw) {
+              throw 'Authentication failed!';
+            };
+      
+            const token = "token";
+      
+            res.status(200).json({ token, user });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json(err);
         }
     }
 };
